@@ -28,13 +28,24 @@
     <div class="chat-header" id="chat-header">
       <button id="back-to-list-btn" class="back-to-list-btn">←</button>
       <span id="chat-title">Select a chat</span>
+      <button id="search-btn" class="header-icon-btn hidden" title="Search">🔍</button>
+      <button id="members-btn" class="header-icon-btn hidden" title="Members">👥</button>
+      <button id="invite-member-btn" class="header-icon-btn hidden" title="Invite member">＋👤</button>
+      <button id="group-settings-btn" class="header-icon-btn hidden" title="Group Settings">⚙️</button>
     </div>
+    <div class="search-bar hidden" id="search-bar">
+      <input type="text" id="search-input" placeholder="Search messages..." />
+      <button id="close-search-btn">✕</button>
+    </div>
+    <div class="search-results hidden" id="search-results"></div>
 
     <div class="messages-container" id="messages-container">
       <p class="placeholder-text">Select a chat room to start messaging</p>
     </div>
 
     <div class="input-area" id="input-area">
+      <label for="img-input" class="img-upload-btn" id="img-upload-label" title="Send image">🖼️</label>
+      <input type="file" id="img-input" accept="image/*" hidden />
       <textarea id="msg-input" placeholder="Type a message... (Shift+Enter for new line)" rows="1" disabled></textarea>
       <button id="send-btn" disabled>Send</button>
     </div>
@@ -44,13 +55,90 @@
   <div class="modal-overlay hidden" id="new-chat-modal">
     <div class="modal">
       <h3>New Chat</h3>
-      <input type="email" id="invite-email" placeholder="Enter user's email" />
+
+      <div class="chat-type-tabs">
+        <button class="chat-type-btn active" id="type-dm">Private</button>
+        <button class="chat-type-btn" id="type-group">Group</button>
+      </div>
+
+      <!-- DM -->
+      <div id="dm-section">
+        <input type="text" id="invite-email" placeholder="Enter username or email" />
+      </div>
+
+      <!-- Group -->
+      <div id="group-section" class="hidden">
+        <input type="text" id="group-name" placeholder="Group name" />
+        <div id="member-inputs">
+          <input type="text" class="member-email" placeholder="Member username or email" />
+        </div>
+        <button class="btn-secondary" id="add-member-btn">＋ Add member</button>
+      </div>
+
       <p class="error-msg" id="invite-error"></p>
       <div class="modal-actions">
         <button class="btn-secondary" id="cancel-chat-btn">Cancel</button>
         <button class="btn-primary" id="confirm-chat-btn">Start Chat</button>
       </div>
     </div>
+  </div>
+
+  <!-- Invite to Group Modal -->
+  <div class="modal-overlay hidden" id="invite-modal">
+    <div class="modal">
+      <h3>Invite Member</h3>
+      <input type="text" id="invite-group-email" placeholder="Enter username or email" />
+      <p class="error-msg" id="invite-group-error"></p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="cancel-invite-btn">Cancel</button>
+        <button class="btn-primary" id="confirm-invite-btn">Invite</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context Menu -->
+  <div class="context-menu hidden" id="context-menu">
+    <button id="ctx-edit">✏️ Edit</button>
+    <button id="ctx-unsend">🗑️ Unsend</button>
+  </div>
+
+  <!-- Edit Message Modal -->
+  <div class="modal-overlay hidden" id="edit-modal">
+    <div class="modal">
+      <h3>Edit Message</h3>
+      <textarea id="edit-input" rows="3"></textarea>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="cancel-edit-btn">Cancel</button>
+        <button class="btn-primary" id="save-edit-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Group Settings Modal -->
+  <div class="modal-overlay hidden" id="group-settings-modal">
+    <div class="modal">
+      <h3>Group Settings</h3>
+      <div class="avatar-section">
+        <img id="group-avatar-preview" src="https://via.placeholder.com/80" style="width:80px;height:80px;border-radius:50%;object-fit:cover;" />
+        <label for="group-avatar-input" class="avatar-edit-btn">Change Photo</label>
+        <input type="file" id="group-avatar-input" accept="image/*" hidden />
+      </div>
+      <input type="text" id="group-name-edit" placeholder="Group name" />
+      <p class="error-msg" id="group-settings-error"></p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="cancel-group-settings-btn">Cancel</button>
+        <button class="btn-primary" id="save-group-settings-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Members Panel -->
+  <div class="members-panel hidden" id="members-panel">
+    <div class="members-panel-header">
+      <span>Members</span>
+      <button id="close-members-btn">✕</button>
+    </div>
+    <div id="members-list"></div>
   </div>
 
   <script type="module" src="js/chat.js"></script>
