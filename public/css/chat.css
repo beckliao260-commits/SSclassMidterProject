@@ -135,6 +135,19 @@ body {
   border-bottom: 1px solid #e0e0e0;
   font-weight: bold;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-to-list-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #1877f2;
+  padding: 0;
 }
 
 .messages-container {
@@ -334,5 +347,10 @@ body {
     position: fixed;
     inset: 0;
     z-index: 20;
+    background: #f0f2f5;
+  }
+
+  .back-to-list-btn {
+    display: block;
   }
 }

@@ -99,6 +99,11 @@ function openRoom(roomId, displayName) {
     el.classList.toggle("active", el.dataset.roomId === roomId);
   });
 
+  // Mobile: show chat area
+  if (window.innerWidth <= 600) {
+    document.getElementById("chat-area").classList.add("active");
+  }
+
   // Unsubscribe previous listener
   if (unsubscribeMessages) unsubscribeMessages();
 
@@ -257,4 +262,9 @@ document.getElementById("confirm-chat-btn").addEventListener("click", async () =
   modal.classList.add("hidden");
   document.getElementById("invite-email").value = "";
   openRoom(roomRef.id, otherUser.username);
+});
+
+// Mobile: back to room list
+document.getElementById("back-to-list-btn").addEventListener("click", () => {
+  document.getElementById("chat-area").classList.remove("active");
 });
