@@ -29,6 +29,7 @@
       <button id="back-to-list-btn" class="back-to-list-btn">←</button>
       <span id="chat-title">Select a chat</span>
       <button id="search-btn" class="header-icon-btn hidden" title="Search">🔍</button>
+      <button id="block-btn" class="header-icon-btn hidden" title="Block User">🚫</button>
       <button id="members-btn" class="header-icon-btn hidden" title="Members">👥</button>
       <button id="invite-member-btn" class="header-icon-btn hidden" title="Invite member">＋👤</button>
       <button id="group-settings-btn" class="header-icon-btn hidden" title="Group Settings">⚙️</button>
@@ -43,9 +44,28 @@
       <p class="placeholder-text">Select a chat room to start messaging</p>
     </div>
 
+    <div class="blocked-warning hidden" id="blocked-warning">
+      🚫 You can no longer chat with this user.
+    </div>
+
+    <!-- Reply Preview Bar -->
+    <div id="reply-preview" class="reply-preview hidden">
+      <div class="reply-preview-inner">
+        <span class="reply-icon">↩️</span>
+        <div id="reply-preview-text" class="reply-preview-text"></div>
+      </div>
+      <button id="cancel-reply-btn" class="cancel-reply-btn">✕</button>
+    </div>
+
+    <!-- Emoji Picker -->
+    <div id="emoji-picker" class="emoji-picker hidden"></div>
+
     <div class="input-area" id="input-area">
       <label for="img-input" class="img-upload-btn" id="img-upload-label" title="Send image">🖼️</label>
       <input type="file" id="img-input" accept="image/*" hidden />
+      <button id="gif-btn" class="img-upload-btn" title="Send GIF">GIF</button>
+      <button id="emoji-btn" class="img-upload-btn" title="Emoji">😊</button>
+      <button id="ai-btn" class="img-upload-btn" title="Ask AI">🤖</button>
       <textarea id="msg-input" placeholder="Type a message... (Shift+Enter for new line)" rows="1" disabled></textarea>
       <button id="send-btn" disabled>Send</button>
     </div>
@@ -98,6 +118,7 @@
 
   <!-- Context Menu -->
   <div class="context-menu hidden" id="context-menu">
+    <button id="ctx-reply">↩️ Reply</button>
     <button id="ctx-edit">✏️ Edit</button>
     <button id="ctx-unsend">🗑️ Unsend</button>
   </div>
@@ -119,7 +140,7 @@
     <div class="modal">
       <h3>Group Settings</h3>
       <div class="avatar-section">
-        <img id="group-avatar-preview" src="https://via.placeholder.com/80" style="width:80px;height:80px;border-radius:50%;object-fit:cover;" />
+        <img id="group-avatar-preview" src="" style="width:80px;height:80px;border-radius:50%;object-fit:cover;background:#e0e0e0;" />
         <label for="group-avatar-input" class="avatar-edit-btn">Change Photo</label>
         <input type="file" id="group-avatar-input" accept="image/*" hidden />
       </div>
@@ -139,6 +160,19 @@
       <button id="close-members-btn">✕</button>
     </div>
     <div id="members-list"></div>
+  </div>
+
+  <!-- GIF Modal -->
+  <div class="modal-overlay hidden" id="gif-modal">
+    <div class="modal gif-modal-inner">
+      <h3>Send GIF</h3>
+      <input type="text" id="gif-search-input" placeholder="Search GIFs (e.g. happy, funny...)" />
+      <div id="gif-grid" class="gif-grid"></div>
+      <p class="error-msg" id="gif-error"></p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="cancel-gif-btn">Cancel</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="js/chat.js"></script>

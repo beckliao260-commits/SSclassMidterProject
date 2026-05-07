@@ -2,9 +2,13 @@ import { auth, db } from "./firebase-config.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  fetchSignInMethodsForEmail,
+  linkWithPopup
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 let isSigningUp = false;
 
@@ -43,7 +47,49 @@ loginForm.addEventListener("submit", async (e) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
-    errorEl.textContent = "Login failed: " + err.message;
+    if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password") {
+      errorEl.textContent = "Wrong password, or this account uses Google Sign-In.";
+    } else {
+      errorEl.textContent = "Login failed: " + err.message;
+    }
+  }
+});
+
+// Google Login
+document.getElementById("google-btn").addEventListener("click", async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    isSigningUp = true;
+    let result;
+
+    // If already logged in with email, link Google to existing account
+    if (auth.currentUser) {
+      result = await linkWithPopup(auth.currentUser, provider);
+    } else {
+      result = await signInWithPopup(auth, provider);
+    }
+
+    const user = result.user;
+
+    // Check if user already exists in Firestore
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    if (!userSnap.exists()) {
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        username: user.displayName || "User",
+        email: user.email,
+        photoURL: user.photoURL || "",
+        phone: "",
+        address: "",
+        createdAt: serverTimestamp()
+      });
+    }
+
+    isSigningUp = false;
+    window.location.href = "chat.html";
+  } catch (err) {
+    isSigningUp = false;
+    console.error("Google login failed:", err.message);
   }
 });
 
